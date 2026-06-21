@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "Property rental marketplace for tenants, owners, and admins.",
 };
 
+import { ThemeProvider } from "@/components/theme-provider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,12 +30,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${manrope.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <SiteNavbar />
-        <div className="flex-1">{children}</div>
-        <SiteFooter />
+      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <SiteNavbar />
+          <div className="flex-1">{children}</div>
+          <SiteFooter />
+        </ThemeProvider>
       </body>
     </html>
   );

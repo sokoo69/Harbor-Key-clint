@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function SiteNavbar() {
   const router = useRouter();
@@ -29,6 +30,7 @@ export function SiteNavbar() {
           )}
         </nav>
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           {isPending ? (
             <div className="h-8 w-20 animate-pulse rounded-md bg-slate-200"></div>
           ) : !data?.session ? (

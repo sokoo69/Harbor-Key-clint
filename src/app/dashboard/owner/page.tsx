@@ -57,12 +57,31 @@ function OwnerContent() {
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-4 md:grid-cols-3">
-        <Stat title="Total earnings" value={`$${summary.totalEarnings}`} />
-        <Stat title="Total properties" value={summary.totalProperties} />
-        <Stat title="Total bookings" value={summary.totalBookings} />
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-3xl font-semibold">Owner dashboard</h1>
+        <Button
+          color="primary"
+          variant="flat"
+          onPress={async () => {
+            const element = document.getElementById("report-area");
+            if (element) {
+              const html2pdf = (await import("html2pdf.js")).default;
+              html2pdf().from(element).save("harbor-key-earnings-report.pdf");
+            }
+          }}
+        >
+          Download PDF Report
+        </Button>
       </div>
-      <Card><Card.Content className="h-[360px]"><ResponsiveContainer width="100%" height="100%"><LineChart data={chartData}><CartesianGrid strokeDasharray="3 3" /><XAxis dataKey="label" /><YAxis /><Tooltip /><Line type="monotone" dataKey="amount" stroke="#111827" strokeWidth={2} /></LineChart></ResponsiveContainer></Card.Content></Card>
+      
+      <div id="report-area" className="space-y-8">
+        <div className="grid gap-4 md:grid-cols-3">
+          <Stat title="Total earnings" value={`$${summary.totalEarnings}`} />
+          <Stat title="Total properties" value={summary.totalProperties} />
+          <Stat title="Total bookings" value={summary.totalBookings} />
+        </div>
+        <Card><Card.Content className="h-[360px] p-6"><h3 className="mb-4 text-xl font-semibold">Monthly earnings</h3><ResponsiveContainer width="100%" height="80%"><LineChart data={chartData}><CartesianGrid strokeDasharray="3 3" /><XAxis dataKey="label" /><YAxis /><Tooltip /><Line type="monotone" dataKey="amount" stroke="#d97706" strokeWidth={2} /></LineChart></ResponsiveContainer></Card.Content></Card>
+      </div>
 
       <Card>
         <Card.Content className="gap-4">
