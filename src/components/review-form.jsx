@@ -25,8 +25,8 @@ export function ReviewForm({ propertyId }) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              name: data.session.user.name,
-              email: data.session.user.email,
+              name: data.user.name,
+              email: data.user.email,
               rating: form.rating,
               comment: form.comment,
             }),

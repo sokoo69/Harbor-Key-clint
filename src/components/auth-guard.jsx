@@ -2,28 +2,40 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Spinner } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 
-export function AuthGuard({ children }) {
+export function AuthGuard({ children, allowedRoles }) {
   const router = useRouter();
   const { data, isPending } = authClient.useSession();
 
   useEffect(() => {
-    if (!isPending && !data?.session) {
+    if (isPending) return;
+
+    if (!data?.session) {
       router.replace("/login");
+      return;
     }
-  }, [data?.session, isPending, router]);
+
+    if (allowedRoles && allowedRoles.length > 0) {
+      if (!allowedRoles.includes(data.user.role)) {
+        router.replace(`/dashboard/${data.user.role}`);
+      }
+    }
+  }, [data, isPending, router, allowedRoles]);
 
   if (isPending) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Spinner label="Checking your session" />
+        <div className="text-sm font-medium text-slate-500">Checking your session...</div>
       </div>
     );
   }
 
   if (!data?.session) {
+    return null;
+  }
+
+  if (allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(data.user.role)) {
     return null;
   }
 

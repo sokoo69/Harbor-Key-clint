@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }) {
           <Link href="/dashboard/admin" className="rounded-full border border-slate-300 px-4 py-2 text-sm">
             Admin
           </Link>
-          <span className="ml-auto text-sm text-slate-600">{data?.session?.user.name}</span>
+          <span className="ml-auto text-sm text-slate-600">{data?.user?.name}</span>
         </div>
         {children}
       </main>

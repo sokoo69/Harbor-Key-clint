@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Card, Input } from "@heroui/react";
+import { Button, Card } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 
 export default function RegisterPage() {
@@ -10,9 +10,9 @@ export default function RegisterPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    image: "",
     password: "",
   });
+  const [file, setFile] = useState(null);
   const [busy, setBusy] = useState(false);
 
   return (
@@ -32,8 +32,8 @@ export default function RegisterPage() {
             <input type="email" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-amber-700 focus:outline-none focus:ring-1 focus:ring-amber-700" />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">Photo URL</label>
-            <input type="text" value={form.image} onChange={(e) => setForm((p) => ({ ...p, image: e.target.value }))} className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-amber-700 focus:outline-none focus:ring-1 focus:ring-amber-700" />
+            <label className="mb-1.5 block text-sm font-medium text-slate-700">Profile Photo</label>
+            <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-amber-700 focus:outline-none focus:ring-1 focus:ring-amber-700 bg-white" />
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-medium text-slate-700">Password</label>
@@ -44,11 +44,25 @@ export default function RegisterPage() {
             isLoading={busy}
             onPress={async () => {
               setBusy(true);
+              let imageUrl = "";
+              if (file) {
+                const formData = new FormData();
+                formData.append("image", file);
+                const uploadRes = await fetch("/api/uploads/imgbb", {
+                  method: "POST",
+                  body: formData,
+                });
+                if (uploadRes.ok) {
+                  const data = await uploadRes.json();
+                  imageUrl = data.url;
+                }
+              }
+
               await authClient.signUp.email({
                 name: form.name,
                 email: form.email,
                 password: form.password,
-                image: form.image,
+                image: imageUrl,
               });
               router.push("/dashboard");
             }}

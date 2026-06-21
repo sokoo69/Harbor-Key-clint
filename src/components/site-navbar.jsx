@@ -35,32 +35,33 @@ export function SiteNavbar() {
             <div className="h-8 w-20 animate-pulse rounded-md bg-slate-200"></div>
           ) : !data?.session ? (
             <>
-              <Link href="/login" className="text-slate-900 dark:text-slate-100">
-                <Button variant="flat" size="sm">
-                  Login
-                </Button>
+              <Link
+                href="/login"
+                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                Login
               </Link>
-              <Link href="/register">
-                <Button size="sm" className="bg-amber-700 text-white hover:bg-amber-800">
-                  Register
-                </Button>
+              <Link
+                href="/register"
+                className="rounded-xl bg-amber-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-800"
+              >
+                Register
               </Link>
             </>
           ) : (
             <>
-              <span className="hidden text-sm text-slate-600 md:block">
-                {data.session.user.name}
+              <span className="hidden text-sm text-slate-600 dark:text-slate-300 md:block">
+                {data.user.name}
               </span>
-              <Button
-                size="sm"
-                variant="flat"
-                onPress={async () => {
+              <button
+                onClick={async () => {
                   await authClient.signOut();
                   router.push("/");
                 }}
+                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Logout
-              </Button>
+              </button>
             </>
           )}
         </div>

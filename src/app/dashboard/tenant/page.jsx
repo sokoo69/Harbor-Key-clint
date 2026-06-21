@@ -9,7 +9,7 @@ import { FadeIn } from "@/components/animated";
 
 export default function TenantDashboardPage() {
   return (
-    <AuthGuard>
+    <AuthGuard allowedRoles={["tenant"]}>
       <FadeIn>
         <TenantContent />
       </FadeIn>
@@ -46,7 +46,7 @@ function TenantContent() {
         <div className="overflow-x-auto rounded-2xl bg-white">
           <table className="min-w-full text-sm">
             <thead className="bg-slate-50">
-              <tr><th className="p-3 text-left">Property</th><th className="p-3 text-left">Amount</th><th className="p-3 text-left">Booking status</th><th className="p-3 text-left">Payment status</th></tr>
+              <tr><th className="p-3 text-left">Property</th><th className="p-3 text-left">Amount</th><th className="p-3 text-left">Booking status</th><th className="p-3 text-left">Payment status</th><th className="p-3 text-right">Action</th></tr>
             </thead>
             <tbody>
               {bookings.map((booking) => (
@@ -55,6 +55,23 @@ function TenantContent() {
                   <td className="p-3">${booking.amount}</td>
                   <td className="p-3">{booking.bookingStatus}</td>
                   <td className="p-3">{booking.paymentStatus}</td>
+                  <td className="p-3 text-right">
+                    {booking.bookingStatus === "Pending" && (
+                      <Button
+                        size="sm"
+                        variant="flat"
+                        className="text-red-600 hover:bg-red-50"
+                        onPress={async () => {
+                          if (window.confirm("Are you sure you want to cancel this booking?")) {
+                            await fetchWithAuth(`/bookings/${booking._id}/cancel`, { method: "PATCH" });
+                            setBookings(prev => prev.map(b => b._id === booking._id ? { ...b, bookingStatus: "Cancelled" } : b));
+                          }
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -80,6 +97,7 @@ function TenantContent() {
                       variant="flat"
                       onPress={async () => {
                         await fetchWithAuth(`/favorites/${item.propertyId?._id}`, { method: "DELETE" });
+                        setFavorites(prev => prev.filter(f => f.propertyId?._id !== item.propertyId?._id));
                       }}
                     >
                       Remove
@@ -96,8 +114,8 @@ function TenantContent() {
         <h2 className="mb-4 text-xl font-semibold">Profile</h2>
         <Card>
           <Card.Content>
-            <p className="font-semibold">{itemName(data?.session?.user.name)}</p>
-            <p className="text-sm text-slate-600">{data?.session?.user.email}</p>
+            <p className="font-semibold">{itemName(data?.user?.name)}</p>
+            <p className="text-sm text-slate-600">{data?.user?.email}</p>
           </Card.Content>
         </Card>
       </section>

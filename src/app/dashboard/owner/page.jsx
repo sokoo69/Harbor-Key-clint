@@ -9,7 +9,7 @@ import { fetchWithAuth } from "@/lib/fetcher";
 
 export default function OwnerDashboardPage() {
   return (
-    <AuthGuard>
+    <AuthGuard allowedRoles={["owner"]}>
       <OwnerContent />
     </AuthGuard>
   );
@@ -21,6 +21,8 @@ function OwnerContent() {
   const [chartData, setChartData] = useState([]);
   const [properties, setProperties] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [editingPropertyId, setEditingPropertyId] = useState(null);
+  const [editForm, setEditForm] = useState(null);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -115,10 +117,10 @@ function OwnerContent() {
                   images: form.images.split(",").map((item) => item.trim()).filter(Boolean),
                   extraFeatures: form.extraFeatures.split(",").map((item) => item.trim()).filter(Boolean),
                   ownerInfo: {
-                    name: data?.session?.user.name,
-                    email: data?.session?.user.email,
-                    image: data?.session?.user.image ?? "",
-                    role: data?.session?.user.role,
+                    name: data?.user?.name,
+                    email: data?.user?.email,
+                    image: data?.user?.image ?? "",
+                    role: data?.user?.role,
                   },
                 }),
               });
@@ -166,12 +168,33 @@ function OwnerContent() {
                     )}
                   </td>
                   <td className="p-4 text-right">
-                    <Button size="sm" variant="flat" className="text-red-600 hover:bg-red-50" onPress={async () => {
-                      await fetchWithAuth(`/properties/${property._id}`, { method: "DELETE" });
-                      setProperties(prev => prev.filter(p => p._id !== property._id));
-                    }}>
-                      Delete
-                    </Button>
+                    <div className="flex justify-end gap-2">
+                      <Button size="sm" variant="flat" onPress={() => {
+                        setEditingPropertyId(property._id);
+                        setEditForm({
+                          title: property.title,
+                          description: property.description,
+                          location: property.location,
+                          propertyType: property.propertyType,
+                          rent: String(property.rent),
+                          rentType: property.rentType,
+                          bedrooms: String(property.bedrooms),
+                          bathrooms: String(property.bathrooms),
+                          size: property.size,
+                          amenities: property.amenities.join(", "),
+                          images: property.images.join(", "),
+                          extraFeatures: property.extraFeatures.join(", "),
+                        });
+                      }}>
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="flat" className="text-red-600 hover:bg-red-50" onPress={async () => {
+                        await fetchWithAuth(`/properties/${property._id}`, { method: "DELETE" });
+                        setProperties(prev => prev.filter(p => p._id !== property._id));
+                      }}>
+                        Delete
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -242,6 +265,56 @@ function OwnerContent() {
           </table>
         </div>
       </section>
+
+      {editingPropertyId && editForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 overflow-y-auto">
+          <div className="w-full max-w-2xl rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl my-8">
+            <h3 className="text-xl font-semibold text-slate-950">Edit property</h3>
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
+              <Input label="Property title" value={editForm.title} onChange={(e) => setEditForm((prev) => ({ ...prev, title: e.target.value }))} />
+              <Input label="Location" value={editForm.location} onChange={(e) => setEditForm((prev) => ({ ...prev, location: e.target.value }))} />
+              <Input label="Property type" value={editForm.propertyType} onChange={(e) => setEditForm((prev) => ({ ...prev, propertyType: e.target.value }))} />
+              <Input label="Rent" value={editForm.rent} onChange={(e) => setEditForm((prev) => ({ ...prev, rent: e.target.value }))} />
+              <Input label="Rent type" value={editForm.rentType} onChange={(e) => setEditForm((prev) => ({ ...prev, rentType: e.target.value }))} />
+              <Input label="Bedrooms" value={editForm.bedrooms} onChange={(e) => setEditForm((prev) => ({ ...prev, bedrooms: e.target.value }))} />
+              <Input label="Bathrooms" value={editForm.bathrooms} onChange={(e) => setEditForm((prev) => ({ ...prev, bathrooms: e.target.value }))} />
+              <Input label="Size" value={editForm.size} onChange={(e) => setEditForm((prev) => ({ ...prev, size: e.target.value }))} />
+              <TextArea label="Description" value={editForm.description} onChange={(e) => setEditForm((prev) => ({ ...prev, description: e.target.value }))} />
+              <TextArea label="Amenities (comma separated)" value={editForm.amenities} onChange={(e) => setEditForm((prev) => ({ ...prev, amenities: e.target.value }))} />
+              <TextArea label="Images (comma separated URLs)" value={editForm.images} onChange={(e) => setEditForm((prev) => ({ ...prev, images: e.target.value }))} />
+              <TextArea label="Extra features" value={editForm.extraFeatures} onChange={(e) => setEditForm((prev) => ({ ...prev, extraFeatures: e.target.value }))} />
+            </div>
+            <div className="mt-6 flex justify-end gap-3">
+              <Button variant="flat" onPress={() => setEditingPropertyId(null)}>
+                Cancel
+              </Button>
+              <Button
+                color="primary"
+                onPress={async () => {
+                  const response = await fetchWithAuth(`/properties/${editingPropertyId}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      ...editForm,
+                      rent: Number(editForm.rent),
+                      bedrooms: Number(editForm.bedrooms),
+                      bathrooms: Number(editForm.bathrooms),
+                      amenities: editForm.amenities.split(",").map((item) => item.trim()).filter(Boolean),
+                      images: editForm.images.split(",").map((item) => item.trim()).filter(Boolean),
+                      extraFeatures: editForm.extraFeatures.split(",").map((item) => item.trim()).filter(Boolean),
+                    }),
+                  });
+                  const { property } = await response.json();
+                  setProperties(prev => prev.map(p => p._id === property._id ? property : p));
+                  setEditingPropertyId(null);
+                }}
+              >
+                Save changes
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
