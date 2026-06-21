@@ -6,7 +6,7 @@ import { Button, Input, TextArea } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 import { fetchWithAuth } from "@/lib/fetcher";
 
-export function PropertyActions({ propertyId }: { propertyId: string }) {
+export function PropertyActions({ propertyId }) {
   const router = useRouter();
   const { data } = authClient.useSession();
   const [open, setOpen] = useState(false);
@@ -101,7 +101,7 @@ export function PropertyActions({ propertyId }: { propertyId: string }) {
                       additionalNotes: form.additionalNotes,
                     }),
                   });
-                  const data = (await response.json()) as { url: string };
+                  const data = await response.json();
                   setBusy(false);
                   setOpen(false);
                   router.push(data.url);

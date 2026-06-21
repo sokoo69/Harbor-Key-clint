@@ -2,12 +2,12 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-const ThemeContext = createContext<{ theme: string; setTheme: (theme: string) => void }>({
+const ThemeContext = createContext({
   theme: "light",
   setTheme: () => {},
 });
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState("light");
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setThemeState(isDark ? "dark" : "light");
   }, []);
 
-  const setTheme = (newTheme: string) => {
+  const setTheme = (newTheme) => {
     if (newTheme === "dark") {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");

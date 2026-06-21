@@ -14,12 +14,12 @@ export default function AdminDashboardPage() {
 }
 
 function AdminContent() {
-  const [users, setUsers] = useState<any[]>([]);
-  const [properties, setProperties] = useState<any[]>([]);
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [role, setRole] = useState<Record<string, string>>({});
-  const [feedback, setFeedback] = useState<Record<string, string>>({});
+  const [users, setUsers] = useState([]);
+  const [properties, setProperties] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [role, setRole] = useState({});
+  const [feedback, setFeedback] = useState({});
 
   useEffect(() => {
     async function load() {

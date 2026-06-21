@@ -5,7 +5,7 @@ import { Button, Input, TextArea } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 import { fetchWithAuth } from "@/lib/fetcher";
 
-export function ReviewForm({ propertyId }: { propertyId: string }) {
+export function ReviewForm({ propertyId }) {
   const { data } = authClient.useSession();
   const [form, setForm] = useState({ rating: 5, comment: "" });
 
@@ -19,8 +19,7 @@ export function ReviewForm({ propertyId }: { propertyId: string }) {
         <TextArea label="Comment" value={form.comment} onChange={(e) => setForm((prev) => ({ ...prev, comment: e.target.value }))} />
       </div>
       <Button
-        className="mt-4"
-        className="bg-amber-700 text-white hover:bg-amber-800"
+        className="mt-4 bg-amber-700 text-white hover:bg-amber-800"
         onPress={async () => {
           await fetchWithAuth(`/reviews/property/${propertyId}`, {
             method: "POST",

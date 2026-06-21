@@ -2,16 +2,7 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import { PropertyCard } from "@/components/property-card";
 
-type SearchParams = {
-  search?: string;
-  type?: string;
-  sort?: string;
-  page?: string;
-  minPrice?: string;
-  maxPrice?: string;
-};
-
-async function getProperties(searchParams: SearchParams) {
+async function getProperties(searchParams) {
   const query = new URLSearchParams();
   Object.entries(searchParams).forEach(([key, value]) => {
     if (value) query.set(key, value);
@@ -27,11 +18,7 @@ async function getProperties(searchParams: SearchParams) {
   }
 }
 
-export default async function PropertiesPage({
-  searchParams,
-}: {
-  searchParams: Promise<SearchParams>;
-}) {
+export default async function PropertiesPage({ searchParams }) {
   const params = await searchParams;
   const { properties = [], page = 1, pages = 1 } = await getProperties(params);
 
@@ -69,7 +56,7 @@ export default async function PropertiesPage({
             <p className="mt-2 text-slate-600">Try adjusting your search filters.</p>
           </div>
         ) : (
-          properties.map((property: any) => (
+          properties.map((property) => (
             <PropertyCard
               key={property._id}
               property={property}
@@ -92,11 +79,11 @@ export default async function PropertiesPage({
   );
 }
 
-function InputField({ name, placeholder, defaultValue }: { name: string; placeholder: string; defaultValue?: string }) {
+function InputField({ name, placeholder, defaultValue }) {
   return <input name={name} defaultValue={defaultValue} placeholder={placeholder} className="rounded-xl border border-slate-200 px-4 py-3" />;
 }
 
-function PageLink({ params, page, children }: { params: SearchParams; page: number; children: React.ReactNode }) {
+function PageLink({ params, page, children }) {
   const next = new URLSearchParams();
   Object.entries({ ...params, page: String(page) }).forEach(([key, value]) => {
     if (value) next.set(key, value);

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 
-export function AuthGuard({ children }: { children: React.ReactNode }) {
+export function AuthGuard({ children }) {
   const router = useRouter();
   const { data, isPending } = authClient.useSession();
 

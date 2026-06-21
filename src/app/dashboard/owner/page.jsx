@@ -18,9 +18,9 @@ export default function OwnerDashboardPage() {
 function OwnerContent() {
   const { data } = authClient.useSession();
   const [summary, setSummary] = useState({ totalEarnings: 0, totalProperties: 0, totalBookings: 0 });
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [properties, setProperties] = useState<any[]>([]);
-  const [bookings, setBookings] = useState<any[]>([]);
+  const [chartData, setChartData] = useState([]);
+  const [properties, setProperties] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -246,7 +246,7 @@ function OwnerContent() {
   );
 }
 
-function Stat({ title, value }: { title: string; value: string | number }) {
+function Stat({ title, value }) {
   return (
     <Card><Card.Content><p className="text-sm text-slate-600">{title}</p><p className="mt-2 text-3xl font-semibold">{value}</p></Card.Content></Card>
   );

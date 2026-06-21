@@ -10,7 +10,7 @@ async function getServerToken() {
   return response.data.token;
 }
 
-export async function fetchWithAuth(input: string, init: RequestInit = {}) {
+export async function fetchWithAuth(input, init = {}) {
   const token = await getServerToken();
   const headers = new Headers(init.headers);
   headers.set("Authorization", `Bearer ${token}`);

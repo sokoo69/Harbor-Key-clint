@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { SiteFooter } from "@/components/site-footer";
@@ -15,7 +14,7 @@ const cormorant = Cormorant_Garamond({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Harbor & Key",
   description: "Property rental marketplace for tenants, owners, and admins.",
 };
@@ -23,11 +22,7 @@ export const metadata: Metadata = {
 import { ThemeProvider } from "@/components/theme-provider";
 import { Providers } from "./providers";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }) {
   return (
     <html
       lang="en"

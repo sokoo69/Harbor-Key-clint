@@ -5,7 +5,7 @@ import { genericOAuth } from "better-auth/plugins";
 import { jwt } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
 
-const mongoClient = new MongoClient(process.env.MONGODB_URI as string);
+const mongoClient = new MongoClient(process.env.MONGODB_URI);
 const db = mongoClient.db();
 
 export const auth = betterAuth({
@@ -59,5 +59,3 @@ export const auth = betterAuth({
     nextCookies(),
   ],
 });
-
-export type AuthSession = typeof auth.$Infer.Session;

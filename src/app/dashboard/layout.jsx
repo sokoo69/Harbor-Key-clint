@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AuthGuard } from "@/components/auth-guard";
 import { authClient } from "@/lib/auth-client";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }) {
   const { data } = authClient.useSession();
 
   return (

@@ -93,7 +93,7 @@ export default async function Home() {
             </Link>
           </div>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {properties.map((property: any) => (
+            {properties.map((property) => (
               <PropertyCard
                 key={property._id}
                 property={property}
@@ -163,7 +163,7 @@ export default async function Home() {
           <div className="rounded-[1.75rem] bg-slate-950 p-6 text-white">
             <p className="text-sm uppercase tracking-[0.3em] text-amber-200/80">Customer reviews</p>
             <div className="mt-5 grid gap-4">
-              {reviews.map((review: any) => (
+              {reviews.map((review) => (
                 <div key={review._id} className="rounded-2xl bg-white/5 p-4">
                   <div className="flex items-center justify-between">
                     <p className="font-medium">{review.name}</p>

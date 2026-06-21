@@ -19,8 +19,8 @@ export default function TenantDashboardPage() {
 
 function TenantContent() {
   const { data } = authClient.useSession();
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [favorites, setFavorites] = useState<any[]>([]);
+  const [bookings, setBookings] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     async function load() {
@@ -105,6 +105,6 @@ function TenantContent() {
   );
 }
 
-function itemName(name?: string) {
+function itemName(name) {
   return name || "Tenant";
 }

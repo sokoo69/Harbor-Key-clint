@@ -1,22 +1,7 @@
 import Link from "next/link";
 import { Button, Card, Chip } from "@heroui/react";
 
-type PropertyCardProps = {
-  property: {
-    _id: string;
-    title: string;
-    location: string;
-    propertyType: string;
-    rent: number;
-    rentType: string;
-    images?: string[];
-    status?: string;
-  };
-  ctaHref: string;
-  loggedIn?: boolean;
-};
-
-export function PropertyCard({ property, ctaHref, loggedIn }: PropertyCardProps) {
+export function PropertyCard({ property, ctaHref, loggedIn }) {
   return (
     <Card className="h-full border border-slate-200 bg-white/90">
       <Card.Content className="gap-4">

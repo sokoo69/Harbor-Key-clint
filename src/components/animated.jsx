@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-export function FadeIn({ children }: { children: React.ReactNode }) {
+export function FadeIn({ children }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 18 }}

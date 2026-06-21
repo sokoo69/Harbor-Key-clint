@@ -19,9 +19,9 @@ export default function PropertyDetailsPage() {
 }
 
 function PropertyDetails() {
-  const params = useParams<{ id: string }>();
-  const [property, setProperty] = useState<any>(null);
-  const [reviews, setReviews] = useState<any[]>([]);
+  const params = useParams();
+  const [property, setProperty] = useState(null);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     async function load() {

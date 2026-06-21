@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { FadeIn } from "@/components/animated";
 
-export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function Error({ reset }) {
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-3xl items-center justify-center px-6">
       <FadeIn>
