@@ -1,0 +1,64 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
+
+export function SiteNavbar() {
+  const router = useRouter();
+  const { data, isPending } = authClient.useSession();
+
+  return (
+    <header className="border-b border-amber-900/10 bg-[#f5efe6]/90 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
+        <Link href="/" className="font-semibold tracking-tight text-slate-950">
+          Harbor & Key
+        </Link>
+        <nav className="hidden gap-6 md:flex">
+          <Link href="/" className="text-sm text-slate-700">
+            Home
+          </Link>
+          <Link href="/properties" className="text-sm text-slate-700">
+            All Properties
+          </Link>
+          {data?.session && (
+            <Link href="/dashboard" className="text-sm text-slate-700">
+              Dashboard
+            </Link>
+          )}
+        </nav>
+        <div className="flex items-center gap-3">
+          {isPending ? (
+            <div className="h-8 w-20 animate-pulse rounded-md bg-slate-200"></div>
+          ) : !data?.session ? (
+            <>
+              <Button as={Link} href="/login" variant="flat" size="sm">
+                Login
+              </Button>
+              <Button as={Link} href="/register" size="sm" className="bg-amber-700 text-white hover:bg-amber-800">
+                Register
+              </Button>
+            </>
+          ) : (
+            <>
+              <span className="hidden text-sm text-slate-600 md:block">
+                {data.session.user.name}
+              </span>
+              <Button
+                size="sm"
+                variant="flat"
+                onPress={async () => {
+                  await authClient.signOut();
+                  router.push("/");
+                }}
+              >
+                Logout
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}
