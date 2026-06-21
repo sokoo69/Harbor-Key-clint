@@ -11,7 +11,7 @@ export function SiteNavbar() {
   const { data, isPending } = authClient.useSession();
 
   return (
-    <header className="border-b border-amber-900/10 bg-[#f5efe6]/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-amber-900/10 bg-[#f5efe6]/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
         <Link href="/" className="font-semibold tracking-tight text-slate-950">
           Harbor & Key
