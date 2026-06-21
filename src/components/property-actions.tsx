@@ -68,17 +68,17 @@ export function PropertyActions({ propertyId }: { propertyId: string }) {
                 label="Move-in date"
                 type="date"
                 value={form.moveInDate}
-                onValueChange={(value) => setForm((prev) => ({ ...prev, moveInDate: value }))}
+                onChange={(e) => setForm((prev) => ({ ...prev, moveInDate: e.target.value }))}
               />
               <Input
                 label="Contact number"
                 value={form.contactNumber}
-                onValueChange={(value) => setForm((prev) => ({ ...prev, contactNumber: value }))}
+                onChange={(e) => setForm((prev) => ({ ...prev, contactNumber: e.target.value }))}
               />
               <TextArea
                 label="Additional notes"
                 value={form.additionalNotes}
-                onValueChange={(value) => setForm((prev) => ({ ...prev, additionalNotes: value }))}
+                onChange={(e) => setForm((prev) => ({ ...prev, additionalNotes: e.target.value }))}
               />
               <p className="text-sm text-slate-600">Booking will continue to Stripe after you confirm.</p>
             </div>

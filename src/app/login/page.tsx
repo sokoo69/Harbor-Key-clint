@@ -18,12 +18,12 @@ export default function LoginPage() {
             <p className="text-xs uppercase tracking-[0.3em] text-amber-900/70">Welcome back</p>
             <h1 className="mt-2 text-3xl font-semibold text-slate-950">Login</h1>
           </div>
-          <Input label="Email" value={form.email} onValueChange={(email) => setForm((p) => ({ ...p, email }))} />
+          <Input label="Email" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} />
           <Input
             label="Password"
             type="password"
             value={form.password}
-            onValueChange={(password) => setForm((p) => ({ ...p, password }))}
+            onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
           />
           <Button
             color="primary"

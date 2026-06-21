@@ -15,8 +15,8 @@ export function ReviewForm({ propertyId }: { propertyId: string }) {
     <div className="rounded-[1.5rem] bg-white p-5">
       <h3 className="text-lg font-semibold">Write a review</h3>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <Input label="Rating" type="number" min={1} max={5} value={String(form.rating)} onValueChange={(value) => setForm((prev) => ({ ...prev, rating: Number(value) }))} />
-        <TextArea label="Comment" value={form.comment} onValueChange={(value) => setForm((prev) => ({ ...prev, comment: value }))} />
+        <Input label="Rating" type="number" min={1} max={5} value={String(form.rating)} onChange={(e) => setForm((prev) => ({ ...prev, rating: Number(e.target.value) }))} />
+        <TextArea label="Comment" value={form.comment} onChange={(e) => setForm((prev) => ({ ...prev, comment: e.target.value }))} />
       </div>
       <Button
         className="mt-4"

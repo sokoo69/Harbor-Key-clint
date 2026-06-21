@@ -87,18 +87,18 @@ function OwnerContent() {
         <Card.Content className="gap-4">
           <h2 className="text-2xl font-semibold">Add property</h2>
           <div className="grid gap-3 md:grid-cols-2">
-            <Input label="Property title" value={form.title} onValueChange={(value) => setForm((prev) => ({ ...prev, title: value }))} />
-            <Input label="Location" value={form.location} onValueChange={(value) => setForm((prev) => ({ ...prev, location: value }))} />
-            <Input label="Property type" value={form.propertyType} onValueChange={(value) => setForm((prev) => ({ ...prev, propertyType: value }))} />
-            <Input label="Rent" value={form.rent} onValueChange={(value) => setForm((prev) => ({ ...prev, rent: value }))} />
-            <Input label="Rent type" value={form.rentType} onValueChange={(value) => setForm((prev) => ({ ...prev, rentType: value }))} />
-            <Input label="Bedrooms" value={form.bedrooms} onValueChange={(value) => setForm((prev) => ({ ...prev, bedrooms: value }))} />
-            <Input label="Bathrooms" value={form.bathrooms} onValueChange={(value) => setForm((prev) => ({ ...prev, bathrooms: value }))} />
-            <Input label="Size" value={form.size} onValueChange={(value) => setForm((prev) => ({ ...prev, size: value }))} />
-            <TextArea label="Description" value={form.description} onValueChange={(value) => setForm((prev) => ({ ...prev, description: value }))} />
-            <TextArea label="Amenities (comma separated)" value={form.amenities} onValueChange={(value) => setForm((prev) => ({ ...prev, amenities: value }))} />
-            <TextArea label="Images (comma separated URLs)" value={form.images} onValueChange={(value) => setForm((prev) => ({ ...prev, images: value }))} />
-            <TextArea label="Extra features" value={form.extraFeatures} onValueChange={(value) => setForm((prev) => ({ ...prev, extraFeatures: value }))} />
+            <Input label="Property title" value={form.title} onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))} />
+            <Input label="Location" value={form.location} onChange={(e) => setForm((prev) => ({ ...prev, location: e.target.value }))} />
+            <Input label="Property type" value={form.propertyType} onChange={(e) => setForm((prev) => ({ ...prev, propertyType: e.target.value }))} />
+            <Input label="Rent" value={form.rent} onChange={(e) => setForm((prev) => ({ ...prev, rent: e.target.value }))} />
+            <Input label="Rent type" value={form.rentType} onChange={(e) => setForm((prev) => ({ ...prev, rentType: e.target.value }))} />
+            <Input label="Bedrooms" value={form.bedrooms} onChange={(e) => setForm((prev) => ({ ...prev, bedrooms: e.target.value }))} />
+            <Input label="Bathrooms" value={form.bathrooms} onChange={(e) => setForm((prev) => ({ ...prev, bathrooms: e.target.value }))} />
+            <Input label="Size" value={form.size} onChange={(e) => setForm((prev) => ({ ...prev, size: e.target.value }))} />
+            <TextArea label="Description" value={form.description} onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))} />
+            <TextArea label="Amenities (comma separated)" value={form.amenities} onChange={(e) => setForm((prev) => ({ ...prev, amenities: e.target.value }))} />
+            <TextArea label="Images (comma separated URLs)" value={form.images} onChange={(e) => setForm((prev) => ({ ...prev, images: e.target.value }))} />
+            <TextArea label="Extra features" value={form.extraFeatures} onChange={(e) => setForm((prev) => ({ ...prev, extraFeatures: e.target.value }))} />
           </div>
           <Button
             color="primary"
