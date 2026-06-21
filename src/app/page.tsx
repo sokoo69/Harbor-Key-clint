@@ -3,17 +3,27 @@ import { FadeIn } from "@/components/animated";
 import { PropertyCard } from "@/components/property-card";
 
 async function getFeaturedProperties() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/featured`, {
-    cache: "no-store",
-  });
-  return response.json();
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/properties/featured`, {
+      cache: "no-store",
+    });
+    if (!response.ok) return { properties: [] };
+    return response.json();
+  } catch (error) {
+    return { properties: [] };
+  }
 }
 
 async function getFeaturedReviews() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/featured`, {
-    cache: "no-store",
-  });
-  return response.json();
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/reviews/featured`, {
+      cache: "no-store",
+    });
+    if (!response.ok) return { reviews: [] };
+    return response.json();
+  } catch (error) {
+    return { reviews: [] };
+  }
 }
 
 export default async function Home() {

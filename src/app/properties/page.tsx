@@ -16,10 +16,15 @@ async function getProperties(searchParams: SearchParams) {
   Object.entries(searchParams).forEach(([key, value]) => {
     if (value) query.set(key, value);
   });
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties?${query.toString()}`, {
-    cache: "no-store",
-  });
-  return response.json();
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/properties?${query.toString()}`, {
+      cache: "no-store",
+    });
+    if (!response.ok) return { properties: [], page: 1, pages: 1 };
+    return response.json();
+  } catch (error) {
+    return { properties: [], page: 1, pages: 1 };
+  }
 }
 
 export default async function PropertiesPage({
