@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "./providers";
 
 export default function RootLayout({
   children,
@@ -35,9 +36,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors">
         <ThemeProvider>
-          <SiteNavbar />
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
+          <Providers>
+            <SiteNavbar />
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

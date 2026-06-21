@@ -35,12 +35,16 @@ export function SiteNavbar() {
             <div className="h-8 w-20 animate-pulse rounded-md bg-slate-200"></div>
           ) : !data?.session ? (
             <>
-              <Button as={Link} href="/login" variant="flat" size="sm">
-                Login
-              </Button>
-              <Button as={Link} href="/register" size="sm" className="bg-amber-700 text-white hover:bg-amber-800">
-                Register
-              </Button>
+              <Link href="/login" className="text-slate-900 dark:text-slate-100">
+                <Button variant="flat" size="sm">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button size="sm" className="bg-amber-700 text-white hover:bg-amber-800">
+                  Register
+                </Button>
+              </Link>
             </>
           ) : (
             <>
