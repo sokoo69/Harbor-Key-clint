@@ -1,17 +1,32 @@
 "use client";
 
-import { Card } from "@heroui/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { AuthGuard } from "@/components/auth-guard";
 
 export default function DashboardPage() {
-  const { data } = authClient.useSession();
-  const role = data?.user?.role ?? "tenant";
+  const router = useRouter();
+  const { data, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (!isPending && data?.session) {
+      const role = data.user.role ?? "tenant";
+      if (role === "admin") {
+        router.replace("/dashboard/admin");
+      } else if (role === "owner") {
+        router.replace("/dashboard/owner");
+      } else {
+        router.replace("/dashboard/tenant");
+      }
+    }
+  }, [data, isPending, router]);
 
   return (
-    <section className="grid gap-6 md:grid-cols-3">
-      <Card><Card.Content><h2 className="text-xl font-semibold">Welcome back</h2><p className="text-sm text-slate-600">{data?.user?.name}</p></Card.Content></Card>
-      <Card><Card.Content><h2 className="text-xl font-semibold">Your role</h2><p className="text-sm text-slate-600">{role}</p></Card.Content></Card>
-      <Card><Card.Content><h2 className="text-xl font-semibold">Quick links</h2><p className="text-sm text-slate-600">Use the tabs above to open the matching dashboard.</p></Card.Content></Card>
-    </section>
+    <AuthGuard>
+      <div className="flex h-[50vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-700 border-r-transparent"></div>
+      </div>
+    </AuthGuard>
   );
 }

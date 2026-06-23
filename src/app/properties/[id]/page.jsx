@@ -37,51 +37,104 @@ function PropertyDetails() {
   }, [params.id]);
 
   if (!property) {
-    return <div className="mx-auto max-w-7xl px-6 py-14">Loading property…</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-drafting">
+        <div className="font-mono text-sm tracking-widest text-arch animate-pulse">Loading Specifications...</div>
+      </div>
+    );
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
-      <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="space-y-6">
-          <img
-            src={property.images?.[0] ?? "https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=1200&q=80"}
-            alt={property.title}
-            className="h-[420px] w-full rounded-[2rem] object-cover"
-          />
-          <div className="rounded-[1.75rem] bg-white p-6">
-            <h1 className="text-4xl font-semibold text-slate-950">{property.title}</h1>
-            <p className="mt-2 text-slate-600">{property.location}</p>
-            <p className="mt-4 leading-8 text-slate-700">{property.description}</p>
+    <main className="min-h-screen bg-drafting">
+      {/* HEADER SECTION */}
+      <section className="relative overflow-hidden bg-ink py-12 text-white border-b border-arch/20">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10">
+          <p className="font-mono text-xs font-bold uppercase tracking-widest text-blueprint mb-3">ID: {property._id}</p>
+          <h1 className="text-4xl font-bold font-display tracking-tight lg:text-5xl">{property.title}</h1>
+          <p className="mt-4 font-mono text-sm text-arch">LOC: {property.location}</p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 grid gap-10 lg:grid-cols-[1fr_400px]">
+        {/* LEFT COLUMN: IMAGES & DETAILS */}
+        <div className="space-y-10">
+          <div className="border border-arch/20 bg-white p-2 shadow-sm">
+            <img
+              src={property.images?.[0] ?? "https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=1200&q=80"}
+              alt={property.title}
+              className="h-[500px] w-full object-cover"
+            />
+          </div>
+
+          <div className="bg-white border border-arch/20 p-8 shadow-sm">
+            <h2 className="font-display text-2xl font-bold text-ink border-b border-arch/20 pb-4">Structural Overview</h2>
+            <p className="mt-6 leading-8 text-arch whitespace-pre-wrap">{property.description}</p>
+            
+            <div className="mt-10 grid grid-cols-2 gap-4 border-t border-arch/20 pt-6 sm:grid-cols-4">
+              <div>
+                <p className="font-mono text-xs text-arch uppercase">Type</p>
+                <p className="mt-1 font-bold text-ink">{property.propertyType}</p>
+              </div>
+              <div>
+                <p className="font-mono text-xs text-arch uppercase">Bedrooms</p>
+                <p className="mt-1 font-mono font-bold text-ink">{property.bedrooms || "-"}</p>
+              </div>
+              <div>
+                <p className="font-mono text-xs text-arch uppercase">Bathrooms</p>
+                <p className="mt-1 font-mono font-bold text-ink">{property.bathrooms || "-"}</p>
+              </div>
+              <div>
+                <p className="font-mono text-xs text-arch uppercase">Size</p>
+                <p className="mt-1 font-mono font-bold text-ink">{property.size ? `${property.size} SQFT` : "-"}</p>
+              </div>
+            </div>
           </div>
         </div>
-        <aside className="space-y-6 rounded-[2rem] bg-white p-6">
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-amber-900/70">Booking</p>
-            <p className="mt-2 text-3xl font-semibold text-slate-950">${property.rent}</p>
+
+        {/* RIGHT COLUMN: ACTION PANEL */}
+        <aside className="space-y-6">
+          <div className="sticky top-24 bg-white border border-arch/20 p-8 shadow-sm">
+            <p className="font-mono text-xs uppercase tracking-widest text-arch">Financials</p>
+            <div className="mt-4 flex items-end gap-2 border-b border-arch/20 pb-6">
+              <span className="font-mono text-4xl font-bold text-ink">${property.rent}</span>
+              <span className="font-mono text-sm text-arch mb-1">/ {property.rentType === "Monthly" ? "MONTH" : property.rentType}</span>
+            </div>
+            <div className="mt-6">
+              <PropertyActions propertyId={property._id} />
+            </div>
           </div>
-          <PropertyActions propertyId={property._id} />
         </aside>
       </section>
 
-      <section className="mt-10 rounded-[1.75rem] bg-slate-950 p-6 text-white">
-        <h2 className="text-2xl font-semibold">Customer reviews</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          {reviews.map((review) => (
-            <article key={review._id} className="rounded-2xl bg-white/5 p-4">
-              <div className="flex items-center justify-between">
-                <strong>{review.name}</strong>
-                <span>{review.rating}/5</span>
+      {/* REVIEWS SECTION */}
+      <section className="border-t border-arch/20 bg-plaster py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <h2 className="font-display text-3xl font-bold text-ink">Resident Feedback</h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            {reviews.length === 0 ? (
+              <div className="col-span-full border border-arch/20 bg-white p-8 text-center">
+                <p className="font-mono text-sm text-arch">No logs recorded for this space yet.</p>
               </div>
-              <p className="mt-3 text-sm leading-6 text-slate-200">{review.comment}</p>
-            </article>
-          ))}
+            ) : (
+              reviews.map((review) => (
+                <article key={review._id} className="border-l-4 border-blueprint bg-white p-6 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <strong className="font-display text-lg text-ink">{review.name}</strong>
+                    <span className="font-mono text-sm text-blueprint bg-blueprint/10 px-2 py-1">RATING: {review.rating}/5</span>
+                  </div>
+                  <p className="text-sm leading-relaxed text-arch">{review.comment}</p>
+                </article>
+              ))
+            )}
+          </div>
+
+          <div className="mt-12 max-w-2xl bg-white border border-arch/20 p-8 shadow-sm">
+            <h3 className="font-display text-xl font-bold text-ink mb-6 border-b border-arch/10 pb-4">Submit a Log</h3>
+            <ReviewForm propertyId={params.id} />
+          </div>
         </div>
       </section>
-
-      <div className="mt-8">
-        <ReviewForm propertyId={params.id} />
-      </div>
     </main>
   );
 }

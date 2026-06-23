@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Card, Input } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
+import { FadeIn } from "@/components/animated";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,47 +11,65 @@ export default function LoginPage() {
   const [busy, setBusy] = useState(false);
 
   return (
-    <main className="mx-auto flex max-w-7xl items-center px-6 py-14 lg:px-10">
-      <Card className="mx-auto w-full max-w-lg border border-slate-200 bg-white/90">
-        <Card.Content className="gap-5 p-8">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-amber-900/70">Welcome back</p>
-            <h1 className="mt-2 text-3xl font-semibold text-slate-950">Login</h1>
+    <main className="min-h-[calc(100vh-80px)] flex items-center justify-center bg-drafting bg-blueprint py-12 px-6">
+      <FadeIn>
+        <div className="w-full max-w-md border border-arch/20 bg-white p-8 lg:p-12 shadow-2xl relative">
+          <div className="absolute top-0 left-0 w-full h-1 bg-blueprint"></div>
+          
+          <div className="mb-8">
+            <p className="font-mono text-xs uppercase tracking-widest text-arch">System Access</p>
+            <h1 className="mt-2 font-display text-3xl font-bold text-ink">Identity Verification</h1>
           </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">Email</label>
-            <input type="email" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-amber-700 focus:outline-none focus:ring-1 focus:ring-amber-700" />
+          
+          <div className="space-y-6">
+            <div>
+              <label className="mb-2 block font-mono text-xs font-bold text-ink uppercase tracking-widest">Email Address</label>
+              <input 
+                type="email" 
+                value={form.email} 
+                onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} 
+                className="w-full border border-arch/20 bg-plaster px-4 py-3 text-sm focus:border-blueprint focus:bg-white focus:outline-none transition-colors" 
+              />
+            </div>
+            
+            <div>
+              <label className="mb-2 block font-mono text-xs font-bold text-ink uppercase tracking-widest">Passcode</label>
+              <input 
+                type="password" 
+                value={form.password} 
+                onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))} 
+                className="w-full border border-arch/20 bg-plaster px-4 py-3 text-sm focus:border-blueprint focus:bg-white focus:outline-none transition-colors" 
+              />
+            </div>
+            
+            <div className="pt-4 space-y-4">
+              <button
+                onClick={async () => {
+                  setBusy(true);
+                  await authClient.signIn.email({
+                    email: form.email,
+                    password: form.password,
+                  });
+                  router.push("/dashboard");
+                }}
+                disabled={busy}
+                className="w-full bg-ink px-4 py-4 text-sm font-bold tracking-widest text-white transition-colors hover:bg-blueprint disabled:opacity-50"
+              >
+                {busy ? "AUTHENTICATING..." : "AUTHORIZE ACCESS"}
+              </button>
+              
+              <button
+                onClick={async () => {
+                  await authClient.signIn.social({ provider: "google" });
+                }}
+                className="w-full border border-arch/20 bg-white px-4 py-4 text-sm font-bold tracking-widest text-ink transition-colors hover:bg-plaster"
+              >
+                CONTINUE WITH GOOGLE
+              </button>
+            </div>
           </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">Password</label>
-            <input type="password" value={form.password} onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))} className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-amber-700 focus:outline-none focus:ring-1 focus:ring-amber-700" />
-          </div>
-          <div className="mt-6 flex flex-col gap-3">
-            <button
-              onClick={async () => {
-                setBusy(true);
-                await authClient.signIn.email({
-                  email: form.email,
-                  password: form.password,
-                });
-                router.push("/dashboard");
-              }}
-              disabled={busy}
-              className="w-full rounded-xl bg-amber-700 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-amber-800 disabled:opacity-50"
-            >
-              {busy ? "Logging in..." : "Login"}
-            </button>
-            <button
-              onClick={async () => {
-                await authClient.signIn.social({ provider: "google" });
-              }}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100"
-            >
-              Continue with Google
-            </button>
-          </div>
-        </Card.Content>
-      </Card>
+        </div>
+      </FadeIn>
     </main>
   );
 }

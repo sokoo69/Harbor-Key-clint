@@ -10,19 +10,32 @@ const ThemeContext = createContext({
 export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState("light");
 
+  // On mount: read persisted theme from localStorage and apply it
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setThemeState(isDark ? "dark" : "light");
+    try {
+      const saved = localStorage.getItem("theme");
+      const initial = saved === "dark" ? "dark" : "light";
+      setThemeState(initial);
+      if (initial === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    } catch {
+      // localStorage not available (SSR guard)
+    }
   }, []);
 
   const setTheme = (newTheme) => {
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+    try {
+      if (newTheme === "dark") {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      }
+    } catch {}
     setThemeState(newTheme);
   };
 

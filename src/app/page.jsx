@@ -33,66 +33,82 @@ export default async function Home() {
   ]);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
-      <FadeIn>
-        <section className="grid gap-10 rounded-[2rem] border border-amber-900/10 bg-[#fbf7f1] p-6 shadow-sm lg:grid-cols-[1.1fr_0.9fr] lg:p-10">
-          <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-amber-900/70">
-              Property rental marketplace
-            </p>
-            <h1 className="mt-4 max-w-2xl text-5xl font-semibold leading-tight text-slate-950">
-              Find a place, book it, and keep the paperwork out of your way.
-            </h1>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-700">
-              Harbor & Key keeps search, booking, payment, and moderation in one flow
-              for tenants, owners, and admins.
-            </p>
-            <form action="/properties" method="get" className="mt-8 flex flex-wrap items-center gap-3">
-              <input type="text" name="search" placeholder="Location..." className="w-full md:w-auto rounded-full border border-slate-200 px-4 py-3 text-sm flex-1 min-w-[120px] focus:outline-none focus:ring-2 focus:ring-amber-700/20" />
-              <select name="type" className="w-full md:w-auto rounded-full border border-slate-200 px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-700/20">
-                <option value="">Any Type</option>
-                <option value="Apartment">Apartment</option>
-                <option value="House">House</option>
-                <option value="Villa">Villa</option>
-                <option value="Commercial">Commercial</option>
-              </select>
-              <input type="number" name="minPrice" placeholder="Min $" className="w-[calc(50%-0.375rem)] md:w-24 rounded-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-700/20" />
-              <input type="number" name="maxPrice" placeholder="Max $" className="w-[calc(50%-0.375rem)] md:w-24 rounded-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-700/20" />
-              <button type="submit" className="w-full md:w-auto rounded-full bg-amber-700 px-6 py-3 text-sm font-medium text-white hover:bg-amber-800 transition-colors">
-                Search
-              </button>
-            </form>
-          </div>
-          <div className="rounded-[1.75rem] bg-slate-950 p-6 text-slate-100">
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                ["Approved listings", "240+"],
-                ["Tenant reviews", "4.8/5"],
-                ["Owner response", "< 2h"],
-                ["Cities covered", "18"],
-              ].map(([label, value]) => (
-                <div key={label} className="rounded-2xl bg-white/5 p-4">
-                  <p className="text-sm text-slate-300">{label}</p>
-                  <p className="mt-2 text-2xl font-semibold">{value}</p>
+    <main className="bg-drafting min-h-screen">
+      {/* HERO SECTION */}
+      <section className="relative overflow-hidden bg-white border-b border-arch/20 bg-blueprint">
+        <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]"></div>
+        <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-32">
+          <FadeIn>
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="inline-block border border-ink/10 bg-white px-3 py-1 mb-6 text-xs font-mono tracking-widest text-ink">
+                  VOL 01. PROPERTY RENTAL
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </FadeIn>
+                <h1 className="font-display text-5xl font-bold tracking-tight text-ink lg:text-7xl leading-[1.1]">
+                  Discover Your Next Dimension.
+                </h1>
+                <p className="mt-6 text-lg text-arch max-w-lg leading-relaxed">
+                  Bypass the generic listings. Find, measure, and secure your perfect space through our streamlined rental platform.
+                </p>
 
-      <FadeIn>
-        <section className="mt-16">
-          <div className="mb-6 flex items-end justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-amber-900/70">Featured properties</p>
-              <h2 className="text-3xl font-semibold text-slate-950">Approved listings worth a look</h2>
+                {/* SEARCH FORM */}
+                <form action="/properties" method="get" className="mt-10 bg-white border border-arch/20 shadow-sm flex flex-col md:flex-row p-2 gap-2">
+                  <div className="flex-1 border-b md:border-b-0 md:border-r border-arch/10">
+                    <input type="text" name="search" placeholder="Location..." className="w-full h-full px-4 py-3 text-sm focus:outline-none" />
+                  </div>
+                  <div className="flex-1 border-b md:border-b-0 md:border-r border-arch/10">
+                    <select name="type" className="w-full h-full px-4 py-3 text-sm bg-transparent focus:outline-none">
+                      <option value="">Any Format</option>
+                      <option value="Apartment">Apartment</option>
+                      <option value="House">House</option>
+                      <option value="Villa">Villa</option>
+                      <option value="Commercial">Commercial</option>
+                    </select>
+                  </div>
+                  <div className="w-full md:w-24 border-b md:border-b-0 md:border-r border-arch/10">
+                    <input type="number" name="minPrice" placeholder="Min $" className="w-full h-full px-4 py-3 text-sm font-mono focus:outline-none" />
+                  </div>
+                  <div className="w-full md:w-24">
+                    <input type="number" name="maxPrice" placeholder="Max $" className="w-full h-full px-4 py-3 text-sm font-mono focus:outline-none" />
+                  </div>
+                  <button type="submit" className="bg-ink px-8 py-3 text-sm font-bold tracking-widest text-white hover:bg-blueprint transition-colors">
+                    SEARCH
+                  </button>
+                </form>
+              </div>
+
+              <div className="relative hidden lg:block">
+                <div className="absolute inset-0 bg-blueprint/5 translate-x-4 translate-y-4 border border-blueprint/20" />
+                <div 
+                  className="relative h-[600px] w-full bg-cover bg-center border border-arch/20 shadow-2xl"
+                  style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80')" }}
+                >
+                  {/* Mock Dimension Line */}
+                  <div className="absolute bottom-6 left-6 right-6 flex items-center gap-4">
+                    <div className="h-[1px] flex-1 bg-white/70" />
+                    <span className="bg-ink/80 px-3 py-1 font-mono text-xs text-white backdrop-blur-md">1,200 SQFT</span>
+                    <div className="h-[1px] flex-1 bg-white/70" />
+                  </div>
+                </div>
+              </div>
             </div>
-            <Link href="/properties" className="text-sm text-slate-700 underline">
-              See all
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* FEATURED PROPERTIES */}
+      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+        <FadeIn>
+          <div className="flex items-end justify-between mb-12 border-b border-arch/20 pb-6">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-arch">Approved Selection</p>
+              <h2 className="mt-2 font-display text-4xl font-bold text-ink">Featured Spaces</h2>
+            </div>
+            <Link href="/properties" className="text-sm font-bold tracking-widest text-blueprint hover:text-ink transition-colors">
+              VIEW ALL
             </Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {properties.map((property) => (
               <PropertyCard
                 key={property._id}
@@ -101,81 +117,106 @@ export default async function Home() {
               />
             ))}
           </div>
-        </section>
-      </FadeIn>
+        </FadeIn>
+      </section>
 
-      <FadeIn>
-        <section className="mt-16">
-          <div className="mb-6">
-            <p className="text-sm uppercase tracking-[0.3em] text-amber-900/70">Top Locations</p>
-            <h2 className="text-3xl font-semibold text-slate-950">Explore popular cities</h2>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {['New York', 'Los Angeles', 'Chicago', 'Miami'].map((city) => (
-              <Link href={`/properties?search=${city}`} key={city} className="group relative h-48 overflow-hidden rounded-2xl bg-slate-900 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/40 to-transparent transition-opacity group-hover:opacity-80" />
-                <div className="relative z-10 text-center">
-                  <h3 className="text-2xl font-semibold text-white tracking-wide group-hover:underline">{city}</h3>
+      {/* HOW IT WORKS */}
+      <section className="border-y border-arch/20 bg-plaster py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <FadeIn>
+            <div className="mb-16 text-center">
+              <p className="font-mono text-xs uppercase tracking-widest text-arch">The Process</p>
+              <h2 className="mt-2 font-display text-4xl font-bold text-ink">Blueprint to Reality</h2>
+            </div>
+            <div className="grid gap-12 md:grid-cols-3 relative">
+              <div className="hidden md:block absolute top-6 left-[16.66%] w-[66.66%] h-[1px] bg-arch/30 border-dashed border-t border-arch/40"></div>
+              
+              <div className="relative bg-white p-8 border border-arch/10 shadow-sm text-center z-10">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center bg-blueprint text-white font-mono text-lg font-bold">01</div>
+                <h3 className="mt-6 font-display text-2xl font-bold text-ink">Measure</h3>
+                <p className="mt-3 text-arch text-sm leading-relaxed">Search locations, filter by exact parameters, and review layout specifications before making a decision.</p>
+              </div>
+
+              <div className="relative bg-white p-8 border border-arch/10 shadow-sm text-center z-10">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center bg-blueprint text-white font-mono text-lg font-bold">02</div>
+                <h3 className="mt-6 font-display text-2xl font-bold text-ink">Draft</h3>
+                <p className="mt-3 text-arch text-sm leading-relaxed">Submit your booking request directly to verified owners with our standardized contract workflow.</p>
+              </div>
+
+              <div className="relative bg-white p-8 border border-arch/10 shadow-sm text-center z-10">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center bg-highlight text-ink font-mono text-lg font-bold">03</div>
+                <h3 className="mt-6 font-display text-2xl font-bold text-ink">Occupy</h3>
+                <p className="mt-3 text-arch text-sm leading-relaxed">Once approved, receive your virtual keys and manage your tenancy seamlessly through the dashboard.</p>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE US & REVIEWS */}
+      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+        <FadeIn>
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div className="bg-ink p-10 lg:p-16 text-white flex flex-col justify-center border border-ink shadow-xl">
+              <p className="font-mono text-xs uppercase tracking-widest text-arch/70">Structural Integrity</p>
+              <h2 className="mt-4 font-display text-4xl font-bold">A Foundation Built on Trust</h2>
+              <p className="mt-6 leading-relaxed text-slate-300">
+                We reject the chaos of generic classifieds. Every owner is vetted, every listing is approved by an administrator, and every transaction is secured. No fake listings, no hidden fees. Just clear spaces and straight lines.
+              </p>
+              <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
+                <div>
+                  <p className="font-mono text-3xl font-bold text-highlight">100%</p>
+                  <p className="mt-2 text-sm text-slate-400">Verified Owners</p>
                 </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      </FadeIn>
+                <div>
+                  <p className="font-mono text-3xl font-bold text-highlight">24h</p>
+                  <p className="mt-2 text-sm text-slate-400">Average Approval</p>
+                </div>
+              </div>
+            </div>
 
-      <FadeIn>
-        <section className="mt-16 bg-[#fbf7f1] rounded-[2rem] p-8 lg:p-12 border border-amber-900/10">
-          <div className="text-center mb-10">
-            <p className="text-sm uppercase tracking-[0.3em] text-amber-900/70">How It Works</p>
-            <h2 className="text-3xl font-semibold text-slate-950">Simple steps to your new place</h2>
-          </div>
-          <div className="grid gap-8 md:grid-cols-3 relative">
-            <div className="hidden md:block absolute top-8 left-[16.66%] w-[66.66%] h-[2px] bg-amber-900/10"></div>
-            <div className="text-center relative z-10">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-700 text-2xl font-semibold text-white shadow-lg shadow-amber-900/20">1</div>
-              <h3 className="mt-6 text-xl font-semibold text-slate-950">Search</h3>
-              <p className="mt-3 text-slate-600 px-4">Find the perfect property using our advanced filters and search.</p>
-            </div>
-            <div className="text-center relative z-10">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-700 text-2xl font-semibold text-white shadow-lg shadow-amber-900/20">2</div>
-              <h3 className="mt-6 text-xl font-semibold text-slate-950">Book</h3>
-              <p className="mt-3 text-slate-600 px-4">Request a booking securely online using Stripe checkout.</p>
-            </div>
-            <div className="text-center relative z-10">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-700 text-2xl font-semibold text-white shadow-lg shadow-amber-900/20">3</div>
-              <h3 className="mt-6 text-xl font-semibold text-slate-950">Move In</h3>
-              <p className="mt-3 text-slate-600 px-4">Once the owner approves your request, pack your bags and move in!</p>
-            </div>
-          </div>
-        </section>
-      </FadeIn>
-
-      <FadeIn>
-        <section className="mt-16 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="rounded-[1.75rem] bg-white p-6">
-            <p className="text-sm uppercase tracking-[0.3em] text-amber-900/70">Why choose us</p>
-            <h2 className="mt-3 text-3xl font-semibold text-slate-950">A clear workflow for both sides</h2>
-            <p className="mt-4 leading-7 text-slate-700">
-              Owners publish listings, tenants book with confidence, and admins can
-              approve or reject records with real feedback instead of vague status tags.
-            </p>
-          </div>
-          <div className="rounded-[1.75rem] bg-slate-950 p-6 text-white">
-            <p className="text-sm uppercase tracking-[0.3em] text-amber-200/80">Customer reviews</p>
-            <div className="mt-5 grid gap-4">
-              {reviews.map((review) => (
-                <div key={review._id} className="rounded-2xl bg-white/5 p-4">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium">{review.name}</p>
-                    <p className="text-sm text-amber-200">{review.rating}/5</p>
+            <div className="bg-white p-10 lg:p-16 border border-arch/20">
+              <p className="font-mono text-xs uppercase tracking-widest text-arch">Resident Logs</p>
+              <h2 className="mt-2 font-display text-3xl font-bold text-ink mb-8">Client Feedback</h2>
+              <div className="grid gap-6">
+                {reviews.map((review) => (
+                  <div key={review._id} className="border-l-2 border-blueprint pl-6 py-2">
+                    <p className="text-sm italic leading-relaxed text-slate-600">"{review.comment}"</p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <p className="font-bold text-ink font-display">{review.name}</p>
+                      <p className="font-mono text-sm text-blueprint">RATING: {review.rating}/5</p>
+                    </div>
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-slate-200">{review.comment}</p>
-                </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* TOP LOCATIONS */}
+      <section className="border-t border-arch/20 bg-white py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <FadeIn>
+            <div className="mb-12 border-b border-arch/20 pb-6">
+              <p className="font-mono text-xs uppercase tracking-widest text-arch">Zoning Map</p>
+              <h2 className="mt-2 font-display text-4xl font-bold text-ink">Prime Sectors</h2>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {['Dhaka', 'Khulna', 'Barisal', 'Chittagong'].map((city) => (
+                <Link href={`/properties?search=${city}`} key={city} className="group relative h-64 overflow-hidden bg-ink">
+                  <div className="absolute inset-0 bg-cover bg-center opacity-40 transition-opacity duration-500 group-hover:opacity-20" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=600&q=80')" }} />
+                  <div className="absolute inset-0 border border-white/10 m-3 group-hover:border-blueprint/50 transition-colors" />
+                  <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                    <h3 className="font-display text-2xl font-bold text-white tracking-wide">{city}</h3>
+                    <span className="text-blueprint font-mono text-sm group-hover:translate-x-2 transition-transform">→</span>
+                  </div>
+                </Link>
               ))}
             </div>
-          </div>
-        </section>
-      </FadeIn>
+          </FadeIn>
+        </div>
+      </section>
     </main>
   );
 }

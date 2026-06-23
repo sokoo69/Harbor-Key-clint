@@ -1,13 +1,14 @@
 import { authClient } from "@/lib/auth-client";
 
 async function getServerToken() {
-  const response = await authClient.jwt();
+  const res = await fetch("/api/auth/get-session", { credentials: "include" });
+  const token = res.headers.get("set-auth-jwt");
   
-  if (!response.data?.token) {
+  if (!token) {
     throw new Error("Unable to load auth token");
   }
 
-  return response.data.token;
+  return token;
 }
 
 export async function fetchWithAuth(input, init = {}) {

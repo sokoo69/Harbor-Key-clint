@@ -1,26 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Card } from "@heroui/react";
-import { AuthGuard } from "@/components/auth-guard";
 import { authClient } from "@/lib/auth-client";
 import { fetchWithAuth } from "@/lib/fetcher";
-import { FadeIn } from "@/components/animated";
+import { CalendarRange, Heart, Home, User, Settings } from "lucide-react";
+import { PageBanner } from "@/components/page-banner";
 
 export default function TenantDashboardPage() {
-  return (
-    <AuthGuard allowedRoles={["tenant"]}>
-      <FadeIn>
-        <TenantContent />
-      </FadeIn>
-    </AuthGuard>
-  );
-}
-
-function TenantContent() {
   const { data } = authClient.useSession();
-  const [bookings, setBookings] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  const [totalBookings, setTotalBookings] = useState(0);
+  const [totalFavorites, setTotalFavorites] = useState(0);
+  const [activities, setActivities] = useState([]);
 
   useEffect(() => {
     async function load() {
@@ -30,99 +20,87 @@ function TenantContent() {
       ]);
       const bookingData = await bookingResponse.json();
       const favoriteData = await favoriteResponse.json();
-      setBookings(bookingData.bookings ?? []);
-      setFavorites(favoriteData.favorites ?? []);
-    }
+      
+      const bookings = bookingData.bookings || [];
+      const favorites = favoriteData.favorites || [];
 
+      setTotalBookings(bookings.length);
+      setTotalFavorites(favorites.length);
+
+      const dynamicActivities = [
+        ...bookings.map((b) => ({
+          date: new Date(b.createdAt),
+          message: `Booked "${b.propertyId?.title || 'a property'}" in ${b.propertyId?.location || 'unknown'}.`,
+        })),
+        ...favorites.map((f) => ({
+          date: new Date(f.createdAt),
+          message: `Added "${f.propertyId?.title || 'a property'}" to favorites.`,
+        })),
+      ].sort((a, b) => b.date - a.date).slice(0, 5);
+
+      setActivities(dynamicActivities);
+    }
     void load();
   }, []);
 
   return (
-    <div className="space-y-8">
-      <Card><Card.Content><h1 className="text-3xl font-semibold">Tenant dashboard</h1><p className="text-slate-600">Bookings, favorites, and profile access.</p></Card.Content></Card>
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <PageBanner 
+        title="Tenant Control Panel" 
+        subtitle="System Status" 
+        icon={Settings} 
+      />
 
-      <section>
-        <h2 className="mb-4 text-xl font-semibold">My bookings</h2>
-        <div className="overflow-x-auto rounded-2xl bg-white">
-          <table className="min-w-full text-sm">
-            <thead className="bg-slate-50">
-              <tr><th className="p-3 text-left">Property</th><th className="p-3 text-left">Amount</th><th className="p-3 text-left">Booking status</th><th className="p-3 text-left">Payment status</th><th className="p-3 text-right">Action</th></tr>
-            </thead>
-            <tbody>
-              {bookings.map((booking) => (
-                <tr key={booking._id} className="border-t">
-                  <td className="p-3">{booking.propertyId?.title ?? "Property"}</td>
-                  <td className="p-3">${booking.amount}</td>
-                  <td className="p-3">{booking.bookingStatus}</td>
-                  <td className="p-3">{booking.paymentStatus}</td>
-                  <td className="p-3 text-right">
-                    {booking.bookingStatus === "Pending" && (
-                      <Button
-                        size="sm"
-                        variant="flat"
-                        className="text-red-600 hover:bg-red-50"
-                        onPress={async () => {
-                          if (window.confirm("Are you sure you want to cancel this booking?")) {
-                            await fetchWithAuth(`/bookings/${booking._id}/cancel`, { method: "PATCH" });
-                            setBookings(prev => prev.map(b => b._id === booking._id ? { ...b, bookingStatus: "Cancelled" } : b));
-                          }
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Stats Cards */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="border border-arch/20 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-arch">
+            Total Bookings
+            <CalendarRange className="h-4 w-4 text-blueprint" />
+          </div>
+          <p className="mt-2 text-3xl font-bold text-ink">{totalBookings}</p>
         </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-xl font-semibold">Favorites</h2>
-        <div className="overflow-x-auto rounded-2xl bg-white">
-          <table className="min-w-full text-sm">
-            <thead className="bg-slate-50">
-              <tr><th className="p-3 text-left">Property</th><th className="p-3 text-left">Location</th><th className="p-3 text-left">Action</th></tr>
-            </thead>
-            <tbody>
-              {favorites.map((item) => (
-                <tr key={item._id} className="border-t">
-                  <td className="p-3">{item.propertyId?.title ?? "Property"}</td>
-                  <td className="p-3">{item.propertyId?.location ?? "-"}</td>
-                  <td className="p-3">
-                    <Button
-                      size="sm"
-                      variant="flat"
-                      onPress={async () => {
-                        await fetchWithAuth(`/favorites/${item.propertyId?._id}`, { method: "DELETE" });
-                        setFavorites(prev => prev.filter(f => f.propertyId?._id !== item.propertyId?._id));
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        
+        <div className="border border-arch/20 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-arch">
+            Favorites
+            <Heart className="h-4 w-4 text-blueprint" />
+          </div>
+          <p className="mt-2 text-3xl font-bold text-ink">{totalFavorites}</p>
         </div>
-      </section>
+        
+        <div className="border border-arch/20 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-arch">
+            Active Rentals
+            <Home className="h-4 w-4 text-blueprint" />
+          </div>
+          <p className="mt-2 text-3xl font-bold text-ink">{totalBookings > 0 ? totalBookings : 0}</p>
+        </div>
+        
+        <div className="border border-arch/20 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-arch">
+            Profile Status
+            <User className="h-4 w-4 text-blueprint" />
+          </div>
+          <p className="mt-2 text-lg font-bold font-display text-highlight bg-ink inline-block px-2 py-1 uppercase">Completed</p>
+        </div>
+      </div>
 
-      <section>
-        <h2 className="mb-4 text-xl font-semibold">Profile</h2>
-        <Card>
-          <Card.Content>
-            <p className="font-semibold">{itemName(data?.user?.name)}</p>
-            <p className="text-sm text-slate-600">{data?.user?.email}</p>
-          </Card.Content>
-        </Card>
-      </section>
+      {/* Recent Activity */}
+      <div className="border border-arch/20 bg-white p-8 shadow-sm">
+        <h2 className="text-lg font-bold font-display text-ink border-b border-arch/20 pb-4">Activity Log</h2>
+        <div className="mt-6 space-y-4 font-mono text-sm text-arch">
+          {activities.length > 0 ? (
+            activities.map((act, i) => (
+              <p key={i} className="flex items-center gap-4">
+                <span className="text-blueprint">SYS</span> {act.message}
+              </p>
+            ))
+          ) : (
+            <p className="text-arch/60">No recent activity found.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
-}
-
-function itemName(name) {
-  return name || "Tenant";
 }
