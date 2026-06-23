@@ -1,14 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { FadeIn } from "@/components/animated";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { data, isPending } = authClient.useSession();
   const [form, setForm] = useState({ email: "", password: "" });
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!isPending && data?.session) {
+      router.replace("/dashboard");
+    }
+  }, [data, isPending, router]);
 
   return (
     <main className="min-h-[calc(100vh-80px)] flex items-center justify-center bg-drafting bg-blueprint py-12 px-6">
@@ -60,7 +67,10 @@ export default function LoginPage() {
               
               <button
                 onClick={async () => {
-                  await authClient.signIn.social({ provider: "google" });
+                  await authClient.signIn.social({ 
+                    provider: "google",
+                    callbackURL: "/dashboard" 
+                  });
                 }}
                 className="w-full border border-arch/20 bg-white px-4 py-4 text-sm font-bold tracking-widest text-ink transition-colors hover:bg-plaster"
               >

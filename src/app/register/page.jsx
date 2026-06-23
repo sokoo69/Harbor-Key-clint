@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { FadeIn } from "@/components/animated";
@@ -16,6 +16,13 @@ export default function RegisterPage() {
   const [file, setFile] = useState(null);
   const [busy, setBusy] = useState(false);
   const toast = useToast();
+  const { data, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (!isPending && data?.session) {
+      router.replace("/dashboard");
+    }
+  }, [data, isPending, router]);
 
   return (
     <main className="min-h-[calc(100vh-80px)] flex items-center justify-center bg-drafting bg-blueprint py-12 px-6">
