@@ -65,7 +65,7 @@ export function SiteFooter() {
             </div>
             <div className="mt-8 space-y-3 text-xs">
               <p className="flex items-center gap-2"><Mail className="h-4 w-4 text-blueprint" /> support@harborandkey.com</p>
-              <p className="flex items-center gap-2"><Phone className="h-4 w-4 text-blueprint" /> +1 (800) 555-0199</p>
+              <p className="flex items-center gap-2"><Phone className="h-4 w-4 text-blueprint" /> +8801234567890</p>
             </div>
           </div>
 
