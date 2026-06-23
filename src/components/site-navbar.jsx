@@ -24,7 +24,7 @@ export function SiteNavbar() {
           </Link>
           {data?.session && (
             <Link 
-              href={data?.user?.role === "admin" ? "/dashboard/admin" : data?.user?.role === "owner" ? "/dashboard/owner" : "/dashboard/tenant"} 
+              href={(data?.user?.role || "tenant") === "admin" ? "/dashboard/admin" : (data?.user?.role || "tenant") === "owner" ? "/dashboard/owner" : "/dashboard/tenant"} 
               className="text-sm font-medium tracking-wide text-ink hover:text-blueprint transition-colors"
             >
               DASHBOARD

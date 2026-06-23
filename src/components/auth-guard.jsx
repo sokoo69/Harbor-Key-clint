@@ -17,8 +17,9 @@ export function AuthGuard({ children, allowedRoles }) {
     }
 
     if (allowedRoles && allowedRoles.length > 0) {
-      if (!allowedRoles.includes(data.user.role)) {
-        router.replace(`/dashboard/${data.user.role}`);
+      const role = data.user.role || "tenant";
+      if (!allowedRoles.includes(role)) {
+        router.replace(`/dashboard/${role}`);
       }
     }
   }, [data, isPending, router, allowedRoles]);
@@ -35,8 +36,11 @@ export function AuthGuard({ children, allowedRoles }) {
     return null;
   }
 
-  if (allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(data.user.role)) {
-    return null;
+  if (allowedRoles && allowedRoles.length > 0) {
+    const role = data.user.role || "tenant";
+    if (!allowedRoles.includes(role)) {
+      return null;
+    }
   }
 
   return <>{children}</>;

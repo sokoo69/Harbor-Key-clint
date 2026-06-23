@@ -10,14 +10,16 @@ export default function DashboardPage() {
   const { data, isPending } = authClient.useSession();
 
   useEffect(() => {
-    if (!isPending && data?.session) {
-      const role = data.user.role ?? "tenant";
+    if (!isPending && data) {
+      const role = data.user.role || "tenant";
       if (role === "admin") {
         router.replace("/dashboard/admin");
       } else if (role === "owner") {
         router.replace("/dashboard/owner");
-      } else {
+      } else if (role === "tenant") {
         router.replace("/dashboard/tenant");
+      } else {
+        router.replace(`/dashboard/${role}`);
       }
     }
   }, [data, isPending, router]);

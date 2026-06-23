@@ -40,7 +40,7 @@ export const auth = betterAuth({
         definePayload: ({ user, session }) => ({
           userId: user.id,
           email: user.email,
-          role: user.role,
+          role: user.role || "tenant",
           sessionId: session.id,
         }),
       },
