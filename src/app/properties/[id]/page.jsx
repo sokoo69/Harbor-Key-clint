@@ -23,14 +23,18 @@ function PropertyDetails() {
   const [property, setProperty] = useState(null);
   const [reviews, setReviews] = useState([]);
 
+  const fetchReviews = async () => {
+    const reviewResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/property/${params.id}`);
+    const reviewData = await reviewResponse.json();
+    setReviews(reviewData.reviews ?? []);
+  };
+
   useEffect(() => {
     async function load() {
       const propertyResponse = await fetchWithAuth(`/properties/${params.id}`);
       const propertyData = await propertyResponse.json();
-      const reviewResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/property/${params.id}`);
-      const reviewData = await reviewResponse.json();
       setProperty(propertyData.property);
-      setReviews(reviewData.reviews ?? []);
+      await fetchReviews();
     }
 
     void load();
@@ -131,7 +135,7 @@ function PropertyDetails() {
 
           <div className="mt-12 max-w-2xl bg-white border border-arch/20 p-8 shadow-sm">
             <h3 className="font-display text-xl font-bold text-ink mb-6 border-b border-arch/10 pb-4">Submit a Log</h3>
-            <ReviewForm propertyId={params.id} />
+            <ReviewForm propertyId={params.id} onSuccess={fetchReviews} />
           </div>
         </div>
       </section>

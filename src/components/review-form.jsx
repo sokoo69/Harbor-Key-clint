@@ -35,7 +35,7 @@ function StarRating({ value, onChange }) {
   );
 }
 
-export function ReviewForm({ propertyId }) {
+export function ReviewForm({ propertyId, onSuccess }) {
   const { data } = authClient.useSession();
   const toast = useToast();
   const [form, setForm] = useState({ rating: 5, comment: "" });
@@ -63,6 +63,7 @@ export function ReviewForm({ propertyId }) {
       if (res.ok) {
         toast("Review submitted — thank you!", "success");
         setForm({ rating: 5, comment: "" });
+        if (onSuccess) onSuccess();
       } else {
         toast("Could not submit review, try again", "error");
       }
