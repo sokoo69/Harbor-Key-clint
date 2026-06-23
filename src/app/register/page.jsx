@@ -20,7 +20,9 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (!isPending && data?.session) {
-      router.replace("/dashboard");
+      const searchParams = new URLSearchParams(window.location.search);
+      const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+      router.replace(callbackUrl);
     }
   }, [data, isPending, router]);
 
@@ -108,7 +110,9 @@ export default function RegisterPage() {
                       return;
                     }
                     
-                    router.push("/dashboard");
+                    const searchParams = new URLSearchParams(window.location.search);
+                    const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+                    router.push(callbackUrl);
                   } catch (e) {
                     toast("Something went wrong — please try again", "error");
                     setBusy(false);

@@ -13,7 +13,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!isPending && data?.session) {
-      router.replace("/dashboard");
+      const searchParams = new URLSearchParams(window.location.search);
+      const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+      router.replace(callbackUrl);
     }
   }, [data, isPending, router]);
 
@@ -57,7 +59,9 @@ export default function LoginPage() {
                     email: form.email,
                     password: form.password,
                   });
-                  router.push("/dashboard");
+                  const searchParams = new URLSearchParams(window.location.search);
+                  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+                  router.push(callbackUrl);
                 }}
                 disabled={busy}
                 className="w-full bg-ink px-4 py-4 text-sm font-bold tracking-widest text-white transition-colors hover:bg-blueprint disabled:opacity-50"
@@ -67,9 +71,11 @@ export default function LoginPage() {
               
               <button
                 onClick={async () => {
+                  const searchParams = new URLSearchParams(window.location.search);
+                  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
                   await authClient.signIn.social({ 
                     provider: "google",
-                    callbackURL: "/dashboard" 
+                    callbackURL: callbackUrl 
                   });
                 }}
                 className="w-full border border-arch/20 bg-white px-4 py-4 text-sm font-bold tracking-widest text-ink transition-colors hover:bg-plaster"

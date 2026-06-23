@@ -33,7 +33,7 @@ export function PropertyCard({ property, ctaHref }) {
         
         <div className="mt-5 mt-auto">
           <Link 
-            href={loggedIn ? ctaHref : "/login"} 
+            href={loggedIn ? ctaHref : `/login?callbackUrl=${encodeURIComponent(ctaHref)}`} 
             className="flex w-full items-center justify-center bg-ink py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-blueprint focus:ring-2 focus:ring-blueprint focus:outline-none"
           >
             {loggedIn ? "VIEW DETAILS" : "LOGIN TO VIEW"}
